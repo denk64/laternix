@@ -5,6 +5,14 @@ import win32ui
 from datetime import datetime
 import csv
 import time
+import os
+
+def clear_screen():
+    # Check if the operating system is Windows
+    if os.name == 'nt':
+        os.system('cls')  # For Windows
+    else:
+        os.system('clear')  # For Unix/Linux/Mac
 
 def generate_qr_code(data, size):
     qr = qrcode.QRCode(
@@ -110,7 +118,7 @@ def main():
         alias_label = input("Etiket einscannen: ")
 
         # Clear the screen
-        print("\033[H\033[J")
+        clear_screen()
 
         # count 14 numbers
         if len(alias_label) != 14:
