@@ -118,8 +118,10 @@ def main():
         alias_label = input("Etiket einscannen: ")
 
         # Clear the screen
-        clear_screen()
-
+        try:
+            clear_screen()
+        except:
+            pass
         # count 14 numbers
         if len(alias_label) != 14:
             print("Alias ist nicht 14 Zahlen lang")
