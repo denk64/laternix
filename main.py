@@ -115,8 +115,8 @@ def main():
 
     while True:
         # Take an input from the user
-        alias_label = input("Etiket einscannen: ")
-
+        alias_label = input("\nEtiket einscannen: ")
+        print("\n")
         # Clear the screen
         try:
             clear_screen()
@@ -150,6 +150,7 @@ def main():
 
         # Generate QR code image
         img = generate_qr_code(identifier, qr_size)
+        print("Drucker name: ", printer_name) 
         print("Drucke QR Code...")
 
         for i in range(3):
