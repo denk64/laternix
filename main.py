@@ -56,6 +56,15 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
     hDC.EndDoc()
     hDC.DeleteDC()
 
+# Function to take identifier, remove first and last number and return the remaining 6 numbers
+def get_serial(identifier):
+    return identifier[1:-1]
+
+# Function to write in a csv table the alias, identifier and serial number
+def write_csv(alias, identifier, serial):
+    with open('data.csv', 'a') as f:
+        f.write(f"{alias},{identifier},{serial}\n")
+
 def main():
     # Printer name as seen in Windows Printers and Devices. Replace with your printer name.
     printer_name = "Godex RT860i GZPL"  # Change this to the exact name of your printer in Windows
@@ -77,13 +86,16 @@ def main():
         # count 14 numbers
         if len(alias_label) != 14:
             print("Alias is not 14 numbers")
-            return
+            continue
         # Check if the input is a number
         if not alias_label.isnumeric():
             print("Alias is not a number")
-            return
+            continue
         # Take first 8 numbers as Identifier
         identifier = alias_label[:8]
+
+        # Serial number
+        serial = get_serial(identifier)
 
         # Data to be encoded in QR Code
         data = "Example data for QR Code"
@@ -101,5 +113,9 @@ def main():
             print(f"Label {i+1}")
             print_qr_code(printer_name, img, label_width_px, label_height_px, line_1, line_2, line_3)
 
+        print("QR code printed successfully.")
+        write_csv(alias_label, identifier, serial)
+        print("Data written to CSV file.")
+        
 if __name__ == "__main__":
     main()
