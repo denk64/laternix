@@ -2,6 +2,9 @@ import qrcode
 from PIL import Image, ImageWin
 import win32print
 import win32ui
+from datetime import datetime
+import csv
+import time
 
 def generate_qr_code(data, size):
     qr = qrcode.QRCode(
@@ -60,10 +63,32 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
 def get_serial(identifier):
     return identifier[1:-1]
 
-# Function to write in a csv table the alias, identifier and serial number
-def write_csv(alias, identifier, serial):
-    with open('data.csv', 'a') as f:
-        f.write(f"{alias},{identifier},{serial}\n")
+def write_to_csv(data, filename):
+    # Get the current date
+    current_date = datetime.now().strftime('%Y-%m-%d')
+
+    # Attempt to determine the last written date
+    try:
+        with open(filename, 'r', newline='') as file:
+            # Read all content and check the last date entry
+            last_line = list(csv.reader(file))[-1]
+            last_date = last_line[1] if last_line[0] == 'Date' else None
+    except FileNotFoundError:
+        last_date = None  # File does not exist yet
+
+    # Open the file in append mode, create if doesn't exist
+    with open(filename, 'a', newline='') as file:
+        writer = csv.writer(file)
+        
+        # Write the headers if the file is newly created or empty
+        if file.tell() == 0:
+            writer.writerow(['Alias', 'Identifier', 'Serial Number', 'Date'])
+
+        # Write the data
+        for alias, identifier, serial_number in data:
+            # Ensure alias is treated as a full string, not a number
+            formatted_alias = f'="{alias}"'
+            writer.writerow([formatted_alias, identifier, serial_number, current_date])
 
 def main():
     # Printer name as seen in Windows Printers and Devices. Replace with your printer name.
@@ -83,19 +108,26 @@ def main():
     while True:
         # Take an input from the user
         alias_label = input("Etiket einscannen: ")
+
+        # Clear the screen
+        print("\033[H\033[J")
+
         # count 14 numbers
         if len(alias_label) != 14:
-            print("Alias is not 14 numbers")
+            print("Alias ist nicht 14 Zahlen lang")
             continue
         # Check if the input is a number
         if not alias_label.isnumeric():
-            print("Alias is not a number")
+            print("Alias ist nicht numerisch")
             continue
+
+
         # Take first 8 numbers as Identifier
         identifier = alias_label[:8]
 
         # Serial number
         serial = get_serial(identifier)
+
 
         # Data to be encoded in QR Code
         data = "Example data for QR Code"
@@ -103,19 +135,22 @@ def main():
         line_2 = f"Identifier: {identifier}"
         line_3 = f"200mA"
 
+        print(f"Alias: {alias_label}\nIdentifier: {identifier}\nSerial: {serial}\nVersion: 200mA\n")
+
+
         # Generate QR code image
         img = generate_qr_code(identifier, qr_size)
-        print("Printing QR code...")
-        print("Identifier: ", identifier)
+        print("Drucke QR Code...")
 
         for i in range(3):
             # Print QR Code
             print(f"Label {i+1}")
             print_qr_code(printer_name, img, label_width_px, label_height_px, line_1, line_2, line_3)
+            time.sleep(0.3)
 
-        print("QR code printed successfully.")
-        write_csv(alias_label, identifier, serial)
-        print("Data written to CSV file.")
-        
+        print("QR Code gedruckt.")
+        write_to_csv([[alias_label, identifier, serial]], "data.csv")
+        print("Die Daten wurden in data.csv gespeichert.\n\n")
+
 if __name__ == "__main__":
     main()
