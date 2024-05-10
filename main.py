@@ -123,6 +123,12 @@ def main():
         except:
             pass
 
+        if alias_label == "61599645" or alias_label == "61599635" or alias_label == "61599605":
+            alias_label = f"{alias_label}040186"
+        elif alias_label == "61599625" or alias_label == "61599655" or alias_label == "61599615":
+            alias_label = f"{alias_label}040244"
+            
+
         # if alias_label has 8 numbers, add 040126 to the end
         if len(alias_label) == 8:
             alias_label = alias_label.strip()
@@ -144,14 +150,24 @@ def main():
         # Serial number
         serial = get_serial(identifier)
 
+        # get last 3 digits from alias_label
+        version_ident = alias_label[-3:]
+        print("Version Identifier: ", version_ident)
+        # if first 2 digits are 12, then version is 200mA
+        if version_ident[:2] == "12":
+            version = "200mA"
+        elif version_ident[:2] == "18":
+            version = "300mA"
+        elif version_ident[:2] == "24":
+            version = "400mA"
 
         # Data to be encoded in QR Code
         data = "Example data for QR Code"
         line_1 = f"Alias: {alias_label}"
         line_2 = f"Serial: {serial}"
-        line_3 = f"200mA"
+        line_3 = version
 
-        print(f"Alias: {alias_label}\nIdentifier: {identifier}\nSerial: {serial}\nVersion: 200mA\n")
+        print(f"Alias: {alias_label}\nIdentifier: {identifier}\nSerial: {serial}\nVersion: {version}\n")
 
 
         # Generate QR code image
