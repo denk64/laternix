@@ -122,6 +122,11 @@ def main():
             clear_screen()
         except:
             pass
+
+        # if alias_label has 8 numbers, add 040126 to the end
+        if len(alias_label) == 8:
+            alias_label = alias_label + "040126"
+
         # count 14 numbers
         if len(alias_label) != 14:
             print("Alias ist nicht 14 Zahlen lang")
@@ -142,14 +147,14 @@ def main():
         # Data to be encoded in QR Code
         data = "Example data for QR Code"
         line_1 = f"Alias: {alias_label}"
-        line_2 = f"Identifier: {identifier}"
+        line_2 = f"Serial: {serial}"
         line_3 = f"200mA"
 
         print(f"Alias: {alias_label}\nIdentifier: {identifier}\nSerial: {serial}\nVersion: 200mA\n")
 
 
         # Generate QR code image
-        img = generate_qr_code(identifier, qr_size)
+        img = generate_qr_code(alias_label, qr_size)
         print("Drucker name: ", printer_name) 
         print("Drucke QR Code...")
 
