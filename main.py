@@ -125,7 +125,8 @@ def main():
 
         # if alias_label has 8 numbers, add 040126 to the end
         if len(alias_label) == 8:
-            alias_label = alias_label + "040126"
+            alias_label = alias_label.strip()
+            alias_label = f"{alias_label}040126"
 
         # count 14 numbers
         if len(alias_label) != 14:
