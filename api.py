@@ -26,6 +26,7 @@ def generate_qr_code(data, size):
 
 def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, line2, line3, save_path_without_offsets):
     # Calculate the size of the QR code
+    img = img.resize((label_width_px, label_height_px), Image.BILINEAR)  # Resize the image
     qr_width, qr_height = img.size
 
     # Create a new image with the same dimensions as the label (without offsets)
@@ -52,7 +53,7 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
 
 
     try:
-        img = img.resize((label_width_px, label_height_px), Image.BILINEAR)  # Resize the image
+        
         hDC = win32ui.CreateDC()
         hDC.CreatePrinterDC(printer_name)
         hDC.StartDoc("QR Code Print")
