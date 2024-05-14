@@ -22,20 +22,10 @@ def generate_qr_code(data, size):
     img = img.resize((size, size), Image.BILINEAR)
     return img
 def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, line2, line3, save_path_without_offsets):
-    # Create a new image with the same dimensions as the label (with offsets)
-    label_image_with_offsets = Image.new("RGB", (label_width_px, label_height_px), "white")
-    draw_with_offsets = ImageDraw.Draw(label_image_with_offsets)
 
     # Create a new image with the same dimensions as the label (without offsets)
     label_image_without_offsets = Image.new("RGB", (label_width_px, label_height_px), "white")
     draw_without_offsets = ImageDraw.Draw(label_image_without_offsets)
-
-    # Calculate positions for QR code and text (with offsets)
-    qr_width, qr_height = img.size
-    margin_right = 100
-    x_position_with_offsets = label_width_px - qr_width + margin_right
-    y_position_with_offsets = (label_height_px - qr_height) // 1
-    text_x_position_with_offsets = label_width_px - label_width_px + 600
 
     # Calculate positions for QR code and text (without offsets)
     x_position_without_offsets = (label_width_px - qr_width) // 2 + 390
@@ -44,12 +34,6 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
 
     # Load a font
     font = ImageFont.truetype("arial.ttf", 75)
-
-    # Draw the QR code and text on the label image (with offsets)
-    label_image_with_offsets.paste(img, (x_position_with_offsets, y_position_with_offsets))
-    draw_with_offsets.text((text_x_position_with_offsets, y_position_with_offsets + 10), line1, fill="black", font=font)
-    draw_with_offsets.text((text_x_position_with_offsets, y_position_with_offsets + 110), line2, fill="black", font=font)
-    draw_with_offsets.text((text_x_position_with_offsets, y_position_with_offsets + 210), line3, fill="black", font=font)
 
     # Draw the QR code and text on the label image (without offsets)
     label_image_without_offsets.paste(img, (x_position_without_offsets, y_position_without_offsets))
