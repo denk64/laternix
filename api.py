@@ -32,7 +32,7 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
 
     # Calculate positions for QR code and text (with offsets)
     qr_width, qr_height = img.size
-    margin_right = 500
+    margin_right = 100
     x_position_with_offsets = label_width_px - qr_width + margin_right
     y_position_with_offsets = (label_height_px - qr_height) // 1
     text_x_position_with_offsets = label_width_px - label_width_px + 600
