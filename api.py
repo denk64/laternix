@@ -22,7 +22,11 @@ def generate_qr_code(data, size):
     img = qr.make_image(fill='black', back_color='white').convert('RGB')
     img = img.resize((size, size), Image.BILINEAR)
     return img
+
+
 def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, line2, line3, save_path_without_offsets):
+    # Calculate the size of the QR code
+    qr_width, qr_height = img.size
 
     # Create a new image with the same dimensions as the label (without offsets)
     label_image_without_offsets = Image.new("RGB", (label_width_px, label_height_px), "white")
