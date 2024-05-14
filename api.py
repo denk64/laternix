@@ -42,9 +42,9 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
 
     # Draw the QR code and text on the label image (without offsets)
     label_image_without_offsets.paste(img, (x_position_without_offsets, y_position_without_offsets))
-    draw_without_offsets.text((text_x_position_without_offsets+10, y_position_without_offsets + 10), line1, fill="black", font=font)
-    draw_without_offsets.text((text_x_position_without_offsets+10, y_position_without_offsets + 110), line2, fill="black", font=font)
-    draw_without_offsets.text((text_x_position_without_offsets+10, y_position_without_offsets + 210), line3, fill="black", font=font)
+    draw_without_offsets.text((text_x_position_without_offsets, y_position_without_offsets + 10), line1, fill="black", font=font)
+    draw_without_offsets.text((text_x_position_without_offsets, y_position_without_offsets + 110), line2, fill="black", font=font)
+    draw_without_offsets.text((text_x_position_without_offsets, y_position_without_offsets + 210), line3, fill="black", font=font)
 
     # Save the label images to files if the file does not exist
     if not os.path.exists(save_path_without_offsets):
