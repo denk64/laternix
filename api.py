@@ -58,8 +58,10 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
     draw_without_offsets.text((text_x_position_without_offsets, y_position_without_offsets + 210), line3, fill="black", font=font)
 
     # Save the label images to files
-
-    label_image_without_offsets.save(save_path_without_offsets)
+    try:
+        label_image_without_offsets.save(save_path_without_offsets)
+    except Exception as e:
+        pass
 
     try:
         img = img.resize((label_width_px, label_height_px), Image.BILINEAR)  # Resize the image
