@@ -26,7 +26,6 @@ def generate_qr_code(data, size):
 
 def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, line2, line3, save_path_without_offsets):
     # Calculate the size of the QR code
-    img = img.resize((label_width_px, label_height_px), Image.BILINEAR)  # Resize the image
     qr_width, qr_height = img.size
 
     # Create a new image with the same dimensions as the label (without offsets)
@@ -60,9 +59,6 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
         hDC.StartPage()
 
         dib = ImageWin.Dib(img)
-
-        # Calculate the position to align the QR code to the right
-        qr_width, qr_height = img.size
         margin_right = 500  # Margin from the right edge in pixels
         x_position = label_width_px - qr_width + margin_right
         y_position = (label_height_px - qr_height) // 1  # Center vertically
