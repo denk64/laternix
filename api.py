@@ -62,14 +62,40 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
     label_image_without_offsets.save(save_path_without_offsets)
 
     try:
-        # Printing part (using the image with offsets)
+        img = img.resize((label_width_px, label_height_px), Image.BILINEAR)  # Resize the image
         hDC = win32ui.CreateDC()
         hDC.CreatePrinterDC(printer_name)
         hDC.StartDoc("QR Code Print")
         hDC.StartPage()
 
-        dib = ImageWin.Dib(label_image_with_offsets)
-        dib.draw(hDC.GetHandleOutput(), (0, 0, label_width_px, label_height_px))
+        dib = ImageWin.Dib(img)
+
+        # Calculate the position to align the QR code to the right
+        qr_width, qr_height = img.size
+        margin_right = 500  # Margin from the right edge in pixels
+        x_position = label_width_px - qr_width + margin_right
+        y_position = (label_height_px - qr_height) // 1  # Center vertically
+
+        text_x_position = label_width_px - label_width_px + 600
+        # text_x_position = 10
+        # text_y_position = 10
+
+        # Create and select the font
+        font = win32ui.CreateFont({
+            "name": "Arial",
+            "height": 75,  # Height in logical units; adjust size as needed
+        })
+        hDC.SelectObject(font)
+
+        # Write from left to right 3 lines of text
+        hDC.TextOut(text_x_position, y_position+10, line1)
+        hDC.TextOut(text_x_position, y_position+110, line2)
+        hDC.TextOut(text_x_position, y_position+210, line3)
+
+
+        # Draw the image at the calculated position
+        dib.draw(hDC.GetHandleOutput(), (x_position, y_position, x_position + qr_width, y_position + qr_height))
+
 
         hDC.EndPage()
         hDC.EndDoc()
