@@ -52,7 +52,6 @@ def save_qr_code_image(img, label_width_px, label_height_px, line1, line2, line3
     return save_path
 
 def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, line2, line3):
-    # Calculate the size of the QR code
     qr_width, qr_height = img.size
 
     try:
@@ -62,34 +61,28 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
         hDC.StartPage()
 
         dib = ImageWin.Dib(img)
-        margin_right = 500  # Margin from the right edge in pixels
+        margin_right = 500
         x_position = label_width_px - qr_width + margin_right
-        y_position = (label_height_px - qr_height) // 1  # Center vertically
+        y_position = (label_height_px - qr_height) // 1
 
-        text_x_position = label_width_px - label_width_px + 600
-        # text_x_position = 10
-        # text_y_position = 10
-
-        # Create and select the font
+        text_x_position = 10
         font = win32ui.CreateFont({
             "name": "Arial",
-            "height": 75,  # Height in logical units; adjust size as needed
+            "height": 75,
         })
         hDC.SelectObject(font)
 
-        # Write from left to right 3 lines of text
         hDC.TextOut(text_x_position, y_position + 10, line1)
         hDC.TextOut(text_x_position, y_position + 110, line2)
         hDC.TextOut(text_x_position, y_position + 210, line3)
 
-        # Draw the image at the calculated position
         dib.draw(hDC.GetHandleOutput(), (x_position, y_position, x_position + qr_width, y_position + qr_height))
 
         hDC.EndPage()
         hDC.EndDoc()
         hDC.DeleteDC()
     except Exception as e:
-        print(f"Printer {printer_name} not found")
+        print(f"Printer {printer_name} not found: {e}")
 
 def get_serial(identifier):
     return identifier[1:-1]
