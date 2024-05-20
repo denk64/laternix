@@ -165,7 +165,12 @@ def print_qr_code_api():
     data = request.json
     alias_label = data.get('alias_label')
     alias_label = alias_label.strip()
-    printer_name = data.get('printer_name', "Godex RT860i GZPL")
+    printer_name = data.get('printer_name', "Godex RT863i GZPL")
+    printer_name = "Godex RT863i"
+
+    # List the available printers
+    printers = [printer[2] for printer in win32print.EnumPrinters(2)]
+    print(f"Available printers: {printers}")
 
     if len(alias_label) != 14:
         return jsonify({"error": "Alias is not 14 digits long"}), 400
