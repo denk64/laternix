@@ -153,10 +153,11 @@ def save_qr_code_image_api():
     line_3 = version
 
     img = generate_qr_code(alias_label, qr_size)
-
+    time.sleep(0.1)
     response_img_path = save_qr_code_image(img, label_width_px, label_height_px, line_1, line_2, line_3, f"qr_codes/{alias_label}.png")
     write_to_csv([[alias_label, identifier, serial]], "data.csv")
 
+    time.sleep(0.3)
     response_img_path = f"image path: H:\\Projects\\laternix\\print_api\\laternix\\qr_codes\\{alias_label}.png"
     return jsonify({"image_path": response_img_path}), 200
 
