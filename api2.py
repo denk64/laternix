@@ -137,7 +137,7 @@ def save_qr_code_image_api():
     elif version_ident[:2] == "24":
         version = "400mA"
     elif version_ident[:2] == "30":
-        version = "600mA"
+        version = "650mA"
     else:
         version = "Unknown"
 
@@ -185,7 +185,7 @@ def print_qr_code_api():
     elif version_ident[:2] == "24":
         version = "400mA"
     elif version_ident[:2] == "30":
-        version = "600mA"
+        version = "650mA"
     else:
         version = "Unknown"
 

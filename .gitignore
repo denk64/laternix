@@ -1,4 +1,6 @@
 .venv
+venv
+qr_codes
 data.csv
 qr_code.png
 temp_qr.png
