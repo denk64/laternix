@@ -61,11 +61,11 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
         hDC.StartPage()
 
         dib = ImageWin.Dib(img)
-        margin_right = 500
+        margin_right = -60
         x_position = label_width_px - qr_width + margin_right
-        y_position = (label_height_px - qr_height) // 1
+        y_position = (label_height_px - qr_height) // 1	- 30			
 
-        text_x_position = 10
+        text_x_position = 20
         font = win32ui.CreateFont({
             "name": "Arial",
             "height": 75,
@@ -115,9 +115,6 @@ def save_qr_code_image_api():
     if len(alias_label) != 14:
         return jsonify({"error": "Alias is not 14 digits long"}), 400
 
-    if not alias_label.isnumeric():
-        return jsonify({"error": "Alias is not numeric"}), 400
-
     identifier = alias_label[:8]
     serial = get_serial(identifier)
     version_ident = alias_label[-3:]
@@ -160,7 +157,7 @@ def print_qr_code_api():
     alias_label = data.get('alias_label')
     alias_label = alias_label.strip()
     printer_name = data.get('printer_name', "Godex RT863i GZPL")
-    printer_name = "Godex RT863i"
+    printer_name = "Godex RT860i GZPL"
 
     # List the available printers
     printers = [printer[2] for printer in win32print.EnumPrinters(2)]
@@ -168,9 +165,6 @@ def print_qr_code_api():
 
     if len(alias_label) != 14:
         return jsonify({"error": "Alias is not 14 digits long"}), 400
-
-    if not alias_label.isnumeric():
-        return jsonify({"error": "Alias is not numeric"}), 400
 
     identifier = alias_label[:8]
     serial = get_serial(identifier)
