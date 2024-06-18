@@ -84,6 +84,7 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
     except Exception as e:
         print(f"Printer {printer_name} not found: {e}")
 
+
 def get_serial(identifier):
     return identifier[1:-1]
 
@@ -148,7 +149,7 @@ def save_qr_code_image_api():
     write_to_csv([[alias_label, identifier, serial]], "data.csv")
 
     time.sleep(0.3)
-    response_img_path = f"image path: H:\\Projects\\laternix\\print_api\\laternix\\qr_codes\\{alias_label}.png"
+    response_img_path = f"image path: C:\\Users\\user\\Desktop\\denis\\laternix-main\\qr_codes\\{alias_label}.png"
     return jsonify({"image_path": response_img_path}), 200
 
 @app.route('/print_qr_code', methods=['POST'])
