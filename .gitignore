@@ -1,5 +1,5 @@
-.venv
-venv
+./.venv
+/venv
 qr_codes
 data.csv
 qr_code.png

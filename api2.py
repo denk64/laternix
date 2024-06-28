@@ -61,11 +61,11 @@ def print_qr_code(printer_name, img, label_width_px, label_height_px, line1, lin
         hDC.StartPage()
 
         dib = ImageWin.Dib(img)
-        margin_right = -60
+        margin_right = 510
         x_position = label_width_px - qr_width + margin_right
         y_position = (label_height_px - qr_height) // 1	- 30			
 
-        text_x_position = 20
+        text_x_position = margin_right + 75
         font = win32ui.CreateFont({
             "name": "Arial",
             "height": 75,
@@ -147,9 +147,8 @@ def save_qr_code_image_api():
     time.sleep(0.1)
     response_img_path = save_qr_code_image(img, label_width_px, label_height_px, line_1, line_2, line_3, f"qr_codes/{alias_label}.png")
     write_to_csv([[alias_label, identifier, serial]], "data.csv")
-
     time.sleep(0.3)
-    response_img_path = f"image path: C:\\Users\\user\\Desktop\\denis\\laternix-main\\qr_codes\\{alias_label}.png"
+    response_img_path = f"image path: C:\\Users\\denis.katalinic\\Projects\\denis\\laternix\\qr_codes\\{alias_label}.png"
     return jsonify({"image_path": response_img_path}), 200
 
 @app.route('/print_qr_code', methods=['POST'])
@@ -197,7 +196,7 @@ def print_qr_code_api():
     img = generate_qr_code(alias_label, qr_size)
 
     for i in range(3):
-        time.sleep(0.3)
+        time.sleep(0.1)
         print_qr_code(printer_name, img, label_width_px, label_height_px, line_1, line_2, line_3)
 
     return jsonify({"message": "QR code printed successfully"}), 200
